@@ -19,12 +19,13 @@ app.use(fileUpload());
 app.use(cors()); //WWW-deploy
 //-----------------//CONNECTION à mes DB==>
 //(données sensibles)
+console.log(process.env);
 mongoose.connect(process.env.DATABASE_URL);
 // mongoose.connect("mongodb://localhost:27017/VintedDB");
 cloudinary.config({
-  cloud_name: "CLOUD_NAME",
-  api_key: "API_KEY",
-  api_secret: "API_SECRET",
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
 });
 //----------------//LISTE DE MODELE==>
 //Modele utilisateur
