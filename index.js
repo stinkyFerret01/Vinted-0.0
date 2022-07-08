@@ -3,7 +3,7 @@ console.clear();
 //RECUPERATION de mes package (npm)==>
 //
 const express = require("express");
-const fileUpload = require("express-fileUpload");
+const fileUpload = require("express-fileupload");
 const mongoose = require("mongoose");
 const SHA256 = require("crypto-js/sha256");
 const encBase64 = require("crypto-js/enc-base64");
