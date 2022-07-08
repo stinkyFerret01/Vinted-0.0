@@ -169,7 +169,11 @@ app.post("/user/login", async (req, res) => {
 app.post("/offer/publish", isAuthenticated, async (req, res) => {
   try {
     console.log(req.files);
-    if (price !== null && name !== null && req.files !== null) {
+    if (
+      req.body.price !== null &&
+      req.body.name !== null &&
+      req.files !== null
+    ) {
       const publishedOffer = new Offer({
         product_name: req.body.product_name,
         product_description: req.body.product_description,
