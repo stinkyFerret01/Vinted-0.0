@@ -169,7 +169,7 @@ app.post("/user/login", async (req, res) => {
 app.post("/offer/publish", isAuthenticated, async (req, res) => {
   try {
     console.log("Tout marche bien serveur");
-console.log(req.files.picture);
+    console.log(req.files.picture);
     if (
       req.body.product_price !== null &&
       req.body.product_name !== null &&
@@ -201,17 +201,19 @@ console.log(req.files.picture);
       } else if (req.files.picture === Array) {
         picturesToUpload = req.files.picture;
       }
-      let buffersToUpload = []
-      picturesToUpload.forEach((e)=>{
-        const uploaded = await cloudinary.uploader.upload(convertToBase64(picturesToUpload[e]), {
-          folder: "VintedOffers",
-          public_Id: `${req.body.title} - ${publishedOffer._id}`,
-        }
-        )
-        buffersToUpload.push({secure_url: uploaded.secure_url})
-      })
-      publishedOffer.product_image = buffersToUpload
-        await publishedOffer.save();
+      let buffersToUpload = [];
+      picturesToUpload.forEach(async (e) => {
+        const uploaded = await cloudinary.uploader.upload(
+          convertToBase64(picturesToUpload[e]),
+          {
+            folder: "VintedOffers",
+            public_Id: `${req.body.title} - ${publishedOffer._id}`,
+          }
+        );
+        buffersToUpload.push({ secure_url: uploaded.secure_url });
+      });
+      publishedOffer.product_image = buffersToUpload;
+      await publishedOffer.save();
       return res.json(publishedOffer);
     } else {
       res.status(400).json({
