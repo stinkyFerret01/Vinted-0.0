@@ -204,7 +204,7 @@ app.post("/offer/publish", isAuthenticated, async (req, res) => {
       }
       picturesToUpload = weirdStep[0][0];
     }
-    return res.json(picturesToUpload);
+    return res.json(typeof req.files.picture);
     let buffersToUpload = [];
     for (i = 0; i < picturesToUpload.length; i++) {
       let picToUl = picturesToUpload[i];
