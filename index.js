@@ -1,5 +1,5 @@
 //Clearing test//
-console.clear();
+// console.clear();
 //RECUPERATION de mes package (npm)==>
 //
 const express = require("express");
@@ -168,7 +168,8 @@ app.post("/user/login", async (req, res) => {
 //OFFER//Publication d'annonces
 app.post("/offer/publish", isAuthenticated, async (req, res) => {
   try {
-    console.log(req.files);
+    console.log("Tout marche bien serveur");
+console.log(req.files.picture);
     if (
       req.body.product_price !== null &&
       req.body.product_name !== null &&
