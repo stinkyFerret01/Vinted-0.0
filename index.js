@@ -197,10 +197,11 @@ app.post("/offer/publish", isAuthenticated, async (req, res) => {
     if (typeof req.files.picture === "object") {
       picturesToUpload.push(req.files.picture);
     } else if (typeof req.files.picture === "array") {
-      (req.files.picture).forEach((elem)=>{
-        picturesToUpload.push(elem)})
-      }
+      req.files.picture.forEach((elem) => {
+        picturesToUpload.push(elem);
+      });
     }
+
     return res.json(picturesToUpload);
     let buffersToUpload = [];
     picturesToUpload.forEach(async (elem) => {
