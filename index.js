@@ -199,6 +199,7 @@ app.post("/offer/publish", isAuthenticated, async (req, res) => {
       } else if (req.files.picture === Array) {
         picturesToUpload = req.files.picture;
       }
+      return res.json(picturesToUpload);
       let buffersToUpload = [];
       picturesToUpload.forEach(async (e) => {
         let uploaded = await cloudinary.uploader.upload(
