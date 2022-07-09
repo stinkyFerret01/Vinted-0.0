@@ -170,8 +170,8 @@ app.post("/offer/publish", isAuthenticated, async (req, res) => {
   try {
     console.log(req.files);
     if (
-      req.body.price !== null &&
-      req.body.name !== null &&
+      req.body.product_price !== null &&
+      req.body.product_name !== null &&
       req.files !== null
     ) {
       const publishedOffer = new Offer({
@@ -194,7 +194,6 @@ app.post("/offer/publish", isAuthenticated, async (req, res) => {
           _id: req.user._id,
         },
       });
-      console.log(req.files);
       const pictureToUpload = req.files.picture;
       const uploaded = await cloudinary.uploader.upload(
         convertToBase64(pictureToUpload),
