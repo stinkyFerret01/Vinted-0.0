@@ -194,13 +194,11 @@ app.post("/offer/publish", isAuthenticated, async (req, res) => {
         },
       });
       let picturesToUpload = [];
-      // return res.json(`${typeof req.files.picture}`);
       if (typeof req.files.picture === "object") {
         picturesToUpload.push(req.files.picture);
-      } else if (typeof req.files.picture === Array) {
+      } else if (typeof req.files.picture === "array") {
         picturesToUpload = req.files.picture;
       }
-      return res.json(picturesToUpload);
       let buffersToUpload = [];
       picturesToUpload.forEach(async (e) => {
         let uploaded = await cloudinary.uploader.upload(
