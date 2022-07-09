@@ -199,9 +199,9 @@ app.post("/offer/publish", isAuthenticated, async (req, res) => {
     } else if (typeof req.files.picture === "array") {
       picturesToUpload = req.files.picture;
     }
-    const buffersToUpload = [];
+    let buffersToUpload = [];
     picturesToUpload.forEach(async (elem) => {
-      const uploaded = await cloudinary.uploader.upload(convertToBase64(elem), {
+      let uploaded = await cloudinary.uploader.upload(convertToBase64(elem), {
         folder: "VintedOffers",
         public_Id: `${req.body.title} - ${publishedOffer._id}`,
       });
