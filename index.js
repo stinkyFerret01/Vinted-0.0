@@ -203,17 +203,17 @@ app.post("/offer/publish", isAuthenticated, async (req, res) => {
       });
     }
     let buffersToUpload = [];
-    picturesToUpload.forEach(async (elem) => {
-      let pictureToUpload = elem;
+    for (i = 0; i < picturesToUpload.length; i++) {
+      let picToUl = picturesToUpload[i];
       let uploaded = await cloudinary.uploader.upload(
-        convertToBase64(pictureToUpload),
+        convertToBase64(picToUl),
         {
           folder: "VintedOffers",
           public_Id: `${req.body.title} - ${publishedOffer._id}`,
         }
       );
-      buffersToUpload.push("1");
-    });
+      buffersToUpload.push(i);
+    }
     return res.json(buffersToUpload);
     publishedOffer.product_image = buffersToUpload;
     await publishedOffer.save();
