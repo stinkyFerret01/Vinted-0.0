@@ -198,9 +198,9 @@ app.post("/offer/publish", isAuthenticated, async (req, res) => {
     if (typeof req.files.picture === "object") {
       picturesToUpload.push(req.files.picture);
     } else if (typeof req.files.picture === "array") {
-      req.files.picture.forEach((elem) => {
-        picturesToUpload.push(elem);
-      });
+      for (i = 0; i < req.files.picture; i++) {
+        picturesToUpload.push(req.files.picture[i]);
+      }
     }
     let buffersToUpload = [];
     for (i = 0; i < picturesToUpload.length; i++) {
@@ -212,7 +212,7 @@ app.post("/offer/publish", isAuthenticated, async (req, res) => {
           public_Id: `${req.body.title} - ${publishedOffer._id}`,
         }
       );
-      buffersToUpload.push(uploaded);
+      buffersToUpload.push(uploaded.secure_url);
     }
     return res.json(buffersToUpload);
     publishedOffer.product_image = buffersToUpload;
