@@ -195,10 +195,10 @@ app.post("/offer/publish", isAuthenticated, async (req, res) => {
       },
     });
     let picturesToUpload = [];
-    if (req.files.picture.length === 1) {
+    if (req.files.picture.length === null) {
       picturesToUpload.push(req.files.picture);
     } else if (req.files.picture.length > 1) {
-      for (i = 0; i < req.files.picture; i++) {
+      for (i = 0; i < req.files.picture.length; i++) {
         picturesToUpload.push(req.files.picture[i]);
       }
     }
