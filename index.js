@@ -49,7 +49,7 @@ const Offer = mongoose.model("offer", {
     account: { username: String, avatar: String },
     userId: String,
   },
-  product_image: { secure_url: String },
+  product_image: Array,
 });
 //-------------------------------------------//FONCTIONS ET MIDLEWARE==>
 //Func: Converti une image en buffer (encodage)
@@ -194,15 +194,22 @@ app.post("/offer/publish", isAuthenticated, async (req, res) => {
           _id: req.user._id,
         },
       });
-      const pictureToUpload = req.files.picture;
-      const uploaded = await cloudinary.uploader.upload(
-        convertToBase64(pictureToUpload),
-        {
+      let picturesToUpload = [];
+      if (req.files.picture === Object) {
+        picturesToUpload.push(req.files.picture);
+      } else if (req.files.picture === Array) {
+        picturesToUpload = req.files.picture;
+      }
+      let buffersToUpload = []
+      picturesToUpload.forEach((e)=>{
+        const uploaded = await cloudinary.uploader.upload(convertToBase64(picturesToUpload[e]), {
           folder: "VintedOffers",
           public_Id: `${req.body.title} - ${publishedOffer._id}`,
         }
-      );
-      (publishedOffer.product_image = { secure_url: uploaded.secure_url }),
+        )
+        buffersToUpload.push({secure_url: uploaded.secure_url})
+      })
+      publishedOffer.product_image = buffersToUpload
         await publishedOffer.save();
       return res.json(publishedOffer);
     } else {
