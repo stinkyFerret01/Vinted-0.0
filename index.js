@@ -199,7 +199,7 @@ app.post("/offer/publish", isAuthenticated, async (req, res) => {
     } else if (typeof req.files.picture === "array") {
       picturesToUpload = req.files.picture;
     }
-    return res.json(req.files.picture);
+    return res.json(picturesToUpload);
     let buffersToUpload = [];
     picturesToUpload.forEach(async (elem) => {
       let pictureToUpload = elem;
