@@ -209,7 +209,9 @@ app.post("/offer/publish", isAuthenticated, async (req, res) => {
         convertToBase64(picToUl),
         {
           folder: "VintedOffers",
-          public_id: `${req.body.product_name} - ${publishedOffer._id}`,
+          public_id: `${req.body.product_name} - ${i + 1} - ${
+            publishedOffer._id
+          }`,
         }
       );
       buffersToUpload.push(uploaded.secure_url);
