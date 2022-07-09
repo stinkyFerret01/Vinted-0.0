@@ -209,7 +209,7 @@ app.post("/offer/publish", isAuthenticated, async (req, res) => {
         convertToBase64(picToUl),
         {
           folder: "VintedOffers",
-          public_Id: `${req.body.title} - ${publishedOffer._id}`,
+          public_Id: `${req.body.product_name} - ${publishedOffer._id}`,
         }
       );
       buffersToUpload.push(uploaded.secure_url);
@@ -272,7 +272,7 @@ app.get("/offer/search", async (req, res) => {
         filterObject.product_price = { $lte: req.query.priceMax };
       }
     }
-    // tout autre filtre possible (filtre user utile/mais difficile)
+    // tout autre filtre possible (filtre byUser utile)
     const offers = await Offer.find(filterObject)
       .limit(req.query.objByPage)
       .skip(0 + skip)
