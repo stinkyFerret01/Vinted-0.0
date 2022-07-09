@@ -196,15 +196,14 @@ app.post("/offer/publish", isAuthenticated, async (req, res) => {
     });
     let picturesToUpload = [];
     let weirdStep = [];
-    if (typeof req.files.picture === "object") {
+    if (req.files.picture.length === 1) {
       picturesToUpload.push(req.files.picture);
-    } else if (typeof req.files.picture === "array") {
+    } else if (req.files.picture.length > 1) {
       for (i = 0; i < req.files.picture; i++) {
-        weirdStep.push(req.files.picture[i]);
+        picturesToUpload.push(req.files.picture[i]);
       }
-      picturesToUpload = [];
     }
-    return res.json(req.files.picture.length);
+    return res.json(picturesToUpload);
     let buffersToUpload = [];
     for (i = 0; i < picturesToUpload.length; i++) {
       let picToUl = picturesToUpload[i];
