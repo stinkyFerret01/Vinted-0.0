@@ -167,62 +167,62 @@ app.post("/user/login", async (req, res) => {
 ///////////////////////////////
 //OFFER//Publication d'annonces
 app.post("/offer/publish", isAuthenticated, async (req, res) => {
-  try {
-    console.log("Tout marche bien serveur");
-    if (
-      req.body.product_price !== null &&
-      req.body.product_name !== null &&
-      req.files !== null
-    ) {
-      const publishedOffer = new Offer({
-        product_name: req.body.product_name,
-        product_description: req.body.product_description,
-        product_price: req.body.product_price,
-        product_details: [
-          { MARQUE: req.body.MARQUE },
-          { TAILLE: req.body.TAILLE },
-          { ETAT: req.body.ETAT },
-          { COULEUR: req.body.COULEUR },
-          { EMPLACEMENT: req.body.EMPLACEMENT },
-        ],
-        owner: {
-          account: {
-            username: req.user.name,
-            avatar: req.user.avatar,
-          },
-          user_id: req.user._id,
+  // try {
+  console.log("Tout marche bien serveur");
+  if (
+    req.body.product_price !== null &&
+    req.body.product_name !== null &&
+    req.files !== null
+  ) {
+    const publishedOffer = new Offer({
+      product_name: req.body.product_name,
+      product_description: req.body.product_description,
+      product_price: req.body.product_price,
+      product_details: [
+        { MARQUE: req.body.MARQUE },
+        { TAILLE: req.body.TAILLE },
+        { ETAT: req.body.ETAT },
+        { COULEUR: req.body.COULEUR },
+        { EMPLACEMENT: req.body.EMPLACEMENT },
+      ],
+      owner: {
+        account: {
+          username: req.user.name,
+          avatar: req.user.avatar,
         },
-      });
-      let picturesToUpload = [];
-      if (typeof req.files.picture === "object") {
-        picturesToUpload.push(req.files.picture);
-      } else if (typeof req.files.picture === "array") {
-        picturesToUpload = req.files.picture;
-      }
-      let buffersToUpload = [];
-      picturesToUpload.forEach(async (e) => {
-        let uploaded = await cloudinary.uploader.upload(convertToBase64(e), {
-          folder: "VintedOffers",
-          public_Id: `${req.body.title} - ${publishedOffer._id}`,
-        });
-        console.log(uploaded.secure_url);
-        buffersToUpload.push({ secure_url: uploaded.secure_url });
-      });
-      return res.json(buffersToUpload);
-      publishedOffer.product_image = buffersToUpload;
-      await publishedOffer.save();
-      return res.json(publishedOffer);
-    } else {
-      res.status(400).json({
-        Alerte:
-          "les informations trasmises ne permettent pas la création de votre annonce",
-        Détail:
-          "Les éléments nécéssaire à la publication de votre annonce sont un nom pour l'article à vendre, un prix et une photo",
-      });
+        user_id: req.user._id,
+      },
+    });
+    let picturesToUpload = [];
+    if (typeof req.files.picture === "object") {
+      picturesToUpload.push(req.files.picture);
+    } else if (typeof req.files.picture === "array") {
+      picturesToUpload = req.files.picture;
     }
-  } catch (error) {
-    res.status(400).json({ error: error.message });
+    let buffersToUpload = [];
+    picturesToUpload.forEach(async (e) => {
+      let uploaded = await cloudinary.uploader.upload(convertToBase64(e), {
+        folder: "VintedOffers",
+        public_Id: `${req.body.title} - ${publishedOffer._id}`,
+      });
+      console.log(uploaded.secure_url);
+      buffersToUpload.push({ secure_url: uploaded.secure_url });
+    });
+    return res.json(buffersToUpload);
+    publishedOffer.product_image = buffersToUpload;
+    await publishedOffer.save();
+    return res.json(publishedOffer);
+  } else {
+    res.status(400).json({
+      Alerte:
+        "les informations trasmises ne permettent pas la création de votre annonce",
+      Détail:
+        "Les éléments nécéssaire à la publication de votre annonce sont un nom pour l'article à vendre, un prix et une photo",
+    });
   }
+  // } catch (error) {
+  //   res.status(400).json({ error: error.message });
+  // }
 });
 ///////////////////////////////
 //USER//Modification du profil
