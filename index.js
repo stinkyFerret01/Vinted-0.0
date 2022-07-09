@@ -214,7 +214,6 @@ app.post("/offer/publish", isAuthenticated, async (req, res) => {
       );
       buffersToUpload.push(uploaded.secure_url);
     }
-    return res.json(buffersToUpload);
     publishedOffer.product_image = buffersToUpload;
     await publishedOffer.save();
     return res.json(publishedOffer);
