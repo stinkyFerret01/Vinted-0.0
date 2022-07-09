@@ -169,7 +169,6 @@ app.post("/user/login", async (req, res) => {
 app.post("/offer/publish", isAuthenticated, async (req, res) => {
   try {
     console.log("Tout marche bien serveur");
-    console.log(req.files.picture);
     if (
       req.body.product_price !== null &&
       req.body.product_name !== null &&
