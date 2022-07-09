@@ -201,13 +201,10 @@ app.post("/offer/publish", isAuthenticated, async (req, res) => {
       }
       let buffersToUpload = [];
       picturesToUpload.forEach(async (e) => {
-        let uploaded = await cloudinary.uploader.upload(
-          convertToBase64(picturesToUpload[e]),
-          {
-            folder: "VintedOffers",
-            public_Id: `${req.body.title} - ${publishedOffer._id}`,
-          }
-        );
+        let uploaded = await cloudinary.uploader.upload(convertToBase64(e), {
+          folder: "VintedOffers",
+          public_Id: `${req.body.title} - ${publishedOffer._id}`,
+        });
         buffersToUpload.push({ secure_url: uploaded.secure_url });
       });
       publishedOffer.product_image = buffersToUpload;
