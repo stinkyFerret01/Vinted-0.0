@@ -199,15 +199,13 @@ app.post("/offer/publish", isAuthenticated, async (req, res) => {
     } else if (typeof req.files.picture === "array") {
       picturesToUpload = req.files.picture;
     }
-    let buffersToUpload = [];
-    picturesToUpload.forEach(async (e) => {
-      let uploaded = await cloudinary.uploader.upload(convertToBase64(e), {
+    const buffersToUpload = [];
+    picturesToUpload.forEach(async (elem) => {
+      const uploaded = await cloudinary.uploader.upload(convertToBase64(elem), {
         folder: "VintedOffers",
         public_Id: `${req.body.title} - ${publishedOffer._id}`,
       });
-      console.log(uploaded.secure_url);
       buffersToUpload.push({ secure_url: uploaded.secure_url });
-      res.json.uploaded;
     });
     return res.json(buffersToUpload);
     publishedOffer.product_image = buffersToUpload;
