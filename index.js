@@ -193,11 +193,13 @@ app.post("/offer/publish", isAuthenticated, async (req, res) => {
         user_id: req.user._id,
       },
     });
-    let picturesToUpload = Array;
+    let picturesToUpload = [];
     if (typeof req.files.picture === "object") {
       picturesToUpload.push(req.files.picture);
     } else if (typeof req.files.picture === "array") {
-      picturesToUpload = req.files.picture;
+      (req.files.picture).forEach((elem)=>{
+        picturesToUpload.push(elem)})
+      }
     }
     return res.json(picturesToUpload);
     let buffersToUpload = [];
