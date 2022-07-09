@@ -194,6 +194,7 @@ app.post("/offer/publish", isAuthenticated, async (req, res) => {
         },
       });
       let picturesToUpload = [];
+      return res.json(req.files.picture);
       if (req.files.picture === Object) {
         picturesToUpload.push(req.files.picture);
       } else if (req.files.picture === Array) {
