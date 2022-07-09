@@ -205,7 +205,7 @@ app.post("/offer/publish", isAuthenticated, async (req, res) => {
         folder: "VintedOffers",
         public_Id: `${req.body.title} - ${publishedOffer._id}`,
       });
-      buffersToUpload.push({ secure_url: uploaded.secure_url });
+      buffersToUpload.push(uploaded);
     });
     return res.json(buffersToUpload);
     publishedOffer.product_image = buffersToUpload;
