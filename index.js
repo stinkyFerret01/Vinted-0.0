@@ -47,7 +47,7 @@ const Offer = mongoose.model("offer", {
   product_details: Array,
   owner: {
     account: { username: String, avatar: String },
-    userId: String,
+    user_id: Object,
   },
   product_image: Array,
 });
@@ -187,11 +187,10 @@ app.post("/offer/publish", isAuthenticated, async (req, res) => {
         ],
         owner: {
           account: {
-            userId: req.user._id,
             username: req.user.name,
-            avatar: req.user.secure_url,
+            avatar: req.user.avatar,
           },
-          _id: req.user._id,
+          user_id: req.user._id,
         },
       });
       let picturesToUpload = [];
