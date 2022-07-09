@@ -207,6 +207,7 @@ app.post("/offer/publish", isAuthenticated, async (req, res) => {
       });
       console.log(uploaded.secure_url);
       buffersToUpload.push({ secure_url: uploaded.secure_url });
+      res.json.uploaded;
     });
     return res.json(buffersToUpload);
     publishedOffer.product_image = buffersToUpload;
