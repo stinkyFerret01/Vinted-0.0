@@ -202,11 +202,6 @@ app.post("/offer/publish", isAuthenticated, async (req, res) => {
         picturesToUpload.push(req.files.picture[i]);
       }
     }
-    return res.json({
-      message0: req.files.picture,
-      message1: picturesToUpload,
-      message2: req.files.picture.length,
-    });
     let buffersToUpload = [];
     for (i = 0; i < picturesToUpload.length; i++) {
       let picToUl = picturesToUpload[i];
