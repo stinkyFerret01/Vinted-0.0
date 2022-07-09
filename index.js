@@ -54,7 +54,8 @@ const Offer = mongoose.model("offer", {
 //-------------------------------------------//FONCTIONS ET MIDLEWARE==>
 //Func: Converti une image en buffer (encodage)
 const convertToBase64 = (file) => {
-  return `data:${file.mimetype};base64,${file.data.toString("base64")}`;
+  let result = `data:${file.mimetype};base64,${file.data.toString("base64")}`;
+  return result;
 };
 //////////////////////////////////////////
 //Midle: vérifie le token de l'utilisateur
@@ -201,8 +202,6 @@ app.post("/offer/publish", isAuthenticated, async (req, res) => {
         picturesToUpload.push(elem);
       });
     }
-
-    return res.json(picturesToUpload);
     let buffersToUpload = [];
     picturesToUpload.forEach(async (elem) => {
       let pictureToUpload = elem;
