@@ -199,12 +199,17 @@ app.post("/offer/publish", isAuthenticated, async (req, res) => {
     } else if (typeof req.files.picture === "array") {
       picturesToUpload = req.files.picture;
     }
+    return res.json(picturesToUpload);
     let buffersToUpload = [];
     picturesToUpload.forEach(async (elem) => {
-      let uploaded = await cloudinary.uploader.upload(convertToBase64(elem), {
-        folder: "VintedOffers",
-        public_Id: `${req.body.title} - ${publishedOffer._id}`,
-      });
+      let pictureToUpload = elem;
+      let uploaded = await cloudinary.uploader.upload(
+        convertToBase64(pictureToUpload),
+        {
+          folder: "VintedOffers",
+          public_Id: `${req.body.title} - ${publishedOffer._id}`,
+        }
+      );
       buffersToUpload.push(uploaded);
     });
     return res.json(buffersToUpload);
