@@ -203,7 +203,7 @@ app.post("/offer/publish", isAuthenticated, async (req, res) => {
       }
     }
     return res.json({
-      message0: `${picturesToUpload}`,
+      message0: picturesToUpload,
       message1: `${req.files.picture.length}`,
     });
     let buffersToUpload = [];
