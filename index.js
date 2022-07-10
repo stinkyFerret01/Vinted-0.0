@@ -35,7 +35,7 @@ const User = mongoose.model("user", {
   salt: String,
   hash: String,
   token: String,
-  avatar: String, //Possibilité de valeur par défaut?
+  avatar: String,
   newsLetter: Boolean,
 });
 ////////////////
@@ -180,11 +180,11 @@ app.post("/offer/publish", isAuthenticated, async (req, res) => {
       product_description: req.body.product_description,
       product_price: req.body.product_price,
       product_details: [
-        { MARQUE: req.body.MARQUE },
-        { TAILLE: req.body.TAILLE },
-        { ETAT: req.body.ETAT },
-        { COULEUR: req.body.COULEUR },
-        { EMPLACEMENT: req.body.EMPLACEMENT },
+        { brand: req.body.brand },
+        { size: req.body.size },
+        { status: req.body.status },
+        { color: req.body.color },
+        { location: req.body.location },
       ],
       owner: {
         account: {
