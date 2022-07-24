@@ -18,10 +18,9 @@ app.use(express.json());
 app.use(fileUpload());
 app.use(cors()); //WWW-deploy
 //-----------------//CONNECTION à mes DB==>
-//(données sensibles)
-console.log(process.env);
-mongoose.connect(process.env.DATABASE_URL);
-// mongoose.connect("mongodb://localhost:27017/VintedDB");
+/////////////////////
+// mongoose.connect(process.env.DATABASE_URL);
+mongoose.connect("mongodb://localhost:27017/VintedDB");
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.API_KEY,
@@ -168,68 +167,68 @@ app.post("/user/login", async (req, res) => {
 ///////////////////////////////
 //OFFER//Publication d'annonces
 app.post("/offer/publish", isAuthenticated, async (req, res) => {
-  // try {
-  console.log("Tout marche bien serveur");
-  if (
-    req.body.product_price !== null &&
-    req.body.product_name !== null &&
-    req.files !== null
-  ) {
-    const publishedOffer = new Offer({
-      product_name: req.body.product_name,
-      product_description: req.body.product_description,
-      product_price: req.body.product_price,
-      product_details: [
-        { brand: req.body.brand },
-        { size: req.body.size },
-        { status: req.body.status },
-        { color: req.body.color },
-        { location: req.body.location },
-      ],
-      owner: {
-        account: {
-          username: req.user.name,
-          avatar: req.user.avatar,
+  try {
+    console.log("Tout marche bien serveur");
+    if (
+      req.body.product_price !== null &&
+      req.body.product_name !== null &&
+      req.files !== null
+    ) {
+      const publishedOffer = new Offer({
+        product_name: req.body.product_name,
+        product_description: req.body.product_description,
+        product_price: req.body.product_price,
+        product_details: [
+          { brand: req.body.brand },
+          { size: req.body.size },
+          { status: req.body.status },
+          { color: req.body.color },
+          { location: req.body.location },
+        ],
+        owner: {
+          account: {
+            username: req.user.name,
+            avatar: req.user.avatar,
+          },
+          user_id: req.user._id,
         },
-        user_id: req.user._id,
-      },
-    });
-    let picturesToUpload = [];
-    if (req.files.picture.length === undefined) {
-      picturesToUpload.push(req.files.picture);
-    } else if (req.files.picture.length > 1) {
-      for (i = 0; i < req.files.picture.length; i++) {
-        picturesToUpload.push(req.files.picture[i]);
-      }
-    }
-    let buffersToUpload = [];
-    for (i = 0; i < picturesToUpload.length; i++) {
-      let picToUl = picturesToUpload[i];
-      let uploaded = await cloudinary.uploader.upload(
-        convertToBase64(picToUl),
-        {
-          folder: "VintedOffers",
-          public_id: `${req.body.product_name} - ${i + 1} - ${
-            publishedOffer._id
-          }`,
+      });
+      let picturesToUpload = [];
+      if (req.files.picture.length === undefined) {
+        picturesToUpload.push(req.files.picture);
+      } else if (req.files.picture.length > 1) {
+        for (i = 0; i < req.files.picture.length; i++) {
+          picturesToUpload.push(req.files.picture[i]);
         }
-      );
-      buffersToUpload.push(uploaded.secure_url);
+      }
+      let buffersToUpload = [];
+      for (i = 0; i < picturesToUpload.length; i++) {
+        let picToUl = picturesToUpload[i];
+        let uploaded = await cloudinary.uploader.upload(
+          convertToBase64(picToUl),
+          {
+            folder: "VintedOffers",
+            public_id: `${req.body.product_name} - ${i + 1} - ${
+              publishedOffer._id
+            }`,
+          }
+        );
+        buffersToUpload.push(uploaded.secure_url);
+      }
+      publishedOffer.product_image = buffersToUpload;
+      await publishedOffer.save();
+      return res.json(publishedOffer);
+    } else {
+      res.status(400).json({
+        Alerte:
+          "les informations trasmises ne permettent pas la création de votre annonce",
+        Détail:
+          "Les éléments nécéssaire à la publication de votre annonce sont un nom pour l'article à vendre, un prix et une photo",
+      });
     }
-    publishedOffer.product_image = buffersToUpload;
-    await publishedOffer.save();
-    return res.json(publishedOffer);
-  } else {
-    res.status(400).json({
-      Alerte:
-        "les informations trasmises ne permettent pas la création de votre annonce",
-      Détail:
-        "Les éléments nécéssaire à la publication de votre annonce sont un nom pour l'article à vendre, un prix et une photo",
-    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
-  // } catch (error) {
-  //   res.status(400).json({ error: error.message });
-  // }
 });
 ///////////////////////////////
 //USER//Modification du profil
@@ -273,8 +272,7 @@ app.get("/offer/search", async (req, res) => {
       } else {
         filterObject.product_price = { $lte: req.query.priceMax };
       }
-    }
-    // tout autre filtre possible (filtre byUser utile)
+    } // tout autre filtre possible (filtre byUser utile)
     const offers = await Offer.find(filterObject)
       .limit(req.query.objByPage)
       .skip(0 + skip)
@@ -297,7 +295,6 @@ app.all("*", (req, res) => {
 });
 //////////////////////
 //Démarrage du serveur
-app.listen(process.env.PORT, () => {
-  //3000
+app.listen(process.env.PORT || 3000, () => {
   console.log("Server has Started!");
 });
