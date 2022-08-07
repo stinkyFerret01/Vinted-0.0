@@ -108,20 +108,6 @@ app.post("/user/signup", async (req, res) => {
           sells: 0,
           sellerRate: null,
         });
-        if (req.files !== null) {
-          const pictureToUpload = req.files.picture;
-          const uploaded = await cloudinary.uploader.upload(
-            convertToBase64(pictureToUpload),
-            {
-              folder: "VintedUsers",
-              public_id: `${newUser.name} - ${newUser._id}`,
-            }
-          );
-          newUser.avatar = uploaded.secure_url;
-        } else {
-          newUser.avatar =
-            "https://res.cloudinary.com/detc3sjm1/image/upload/v1657202246/VintedImageDB/react_ap43d7.png";
-        }
         await newUser.save();
 
         res.status(200).json({ message: "enregistrement terminé!" });
