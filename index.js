@@ -272,7 +272,7 @@ app.get("/offer/search", async (req, res) => {
       } else {
         filterObject.product_price = { $lte: req.query.priceMax };
       }
-    } // tout autre filtre possible (filtre byUser utile)
+    }
     const offers = await Offer.find(filterObject)
       .limit(req.query.objByPage)
       .skip(0 + skip)
