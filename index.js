@@ -19,8 +19,8 @@ app.use(fileUpload());
 app.use(cors()); //WWW-deploy
 //-----------------//CONNECTION à mes DB==>
 /////////////////////
-// mongoose.connect(process.env.DATABASE_URL);
-mongoose.connect("mongodb://localhost:27017/VintedDB");
+mongoose.connect(process.env.DATABASE_URL);
+// mongoose.connect("mongodb://localhost:27017/VintedDB");
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.API_KEY,
