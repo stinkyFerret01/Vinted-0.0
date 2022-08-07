@@ -276,8 +276,7 @@ app.get("/offer/search", async (req, res) => {
     const offers = await Offer.find(filterObject)
       .limit(req.query.objByPage)
       .skip(0 + skip)
-      .select("product_name - product_price - _id")
-      .sort({ product_price: req.query.sorting });
+      .select("product_name - product_price - _id");
     res.status(200).json(offers);
   } catch (error) {
     res.status(400).json({ error: error.message });
